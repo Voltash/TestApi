@@ -24,7 +24,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[UniqueEntity('barcode')]
 class Product
 {
-    public const VAT_CLASS = [6, 22];
+    public const VAT_CLASS = [6, 21];
 
     #[ORM\Id]
     #[ORM\GeneratedValue]
