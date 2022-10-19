@@ -8,6 +8,7 @@ use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
@@ -32,6 +33,7 @@ class GenerateUserCommand extends Command
         $this
             ->addArgument('email', InputArgument::REQUIRED, 'Email')
             ->addArgument('password', InputArgument::REQUIRED, 'Password')
+            ->addOption('admin',null,  InputOption::VALUE_OPTIONAL, 'Is admin', false)
         ;
     }
 
@@ -43,6 +45,9 @@ class GenerateUserCommand extends Command
         $user->setPassword(
             $this->passwordHasher->hashPassword($user, $input->getArgument('password'))
         );
+        if ($input->getOption('admin') !== false) {
+            $user->setRoles(['ROLE_ADMIN']);
+        }
         $this->entityManager->persist($user);
         $this->entityManager->flush();
 
